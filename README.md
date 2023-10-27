@@ -1,8 +1,14 @@
-# React + Vite
+# Rocket Academy Coding Bootcamp: High Card
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Available Scripts
 
-Currently, two official plugins are available:
+This project was created using with Vitejs. In the project directory, please run the following commands:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+npm install
+npm run dev
+
+The second command will run the app
+To see the rendered output please open http://localhost:5173 in the browser of your choice, EG: Google Chrome.
+
+The page will reload when you make changes.
+You may also see any lint errors in the console.
