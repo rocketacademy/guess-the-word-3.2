@@ -68,6 +68,7 @@
   border: dotted 3px;
   height: 6rem;
   width: 10rem;
+  margin-bottom:0.5rem;
 }
 
 .number-guesses {
@@ -82,14 +83,25 @@
 .input-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   padding: 0.8rem;
   border: solid 3px;
-  height: 10rem;
+  height: 11rem;
+}
+
+.already-guessed {
+  margin: 0px;
+  padding: 0px;
+  width:10.5rem;
 }
 
 .input-container > button {
   margin: 0.8rem;
   width: 6rem;
+}
+
+.input-container > h3 {
+  margin: 0px;
+  padding: 0px;
 }
