@@ -8,8 +8,8 @@ function App() {
   const [currWord, setCurrentWord] = useState(getRandomWord());
   // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
-
-  // Add additional states below as required.
+  const [guessLeft, setGuessLeft] = useState(10);
+  const [winLose, setWinLose] = useState(null);
 
   const generateWordDisplay = () => {
     const wordDisplay = [];
@@ -21,10 +21,19 @@ function App() {
         wordDisplay.push("_");
       }
     }
+    console.log(currWord);
     return wordDisplay.toString();
   };
 
-  // create additional function to power the
+  const handleGuess = (event) => {
+    event.preventDefault();
+    const input = event.target.elements.input.value; // Get the value of the input field
+    setGuessedLetters([...guessedLetters, input]); // Add the guessed letter to the guessedLetters state
+    if (!currWord.includes(input)) {
+      setGuessLeft(guessLeft - 1);
+    }
+    event.target.reset(); // Reset the input field
+  };
 
   return (
     <>
@@ -35,13 +44,17 @@ function App() {
         <h1>Guess The Word 🚀</h1>
         <h3>Word Display</h3>
         {generateWordDisplay()}
+
         <h3>Guessed Letters</h3>
-        {this.state.guessedLetters.length > 0
-          ? this.state.guessedLetters.toString()
-          : "-"}
+        {guessedLetters.length > 0 ? guessedLetters.toString().toUpperCase() : ""}
         <br />
+        <h3> No. of guesses left: {guessLeft}</h3>
         <h3>Input</h3>
-        {/* Insert form element here */}
+        <form onSubmit={handleGuess}>
+          <input type="text" id="input"></input>
+          <br />
+          <button type="submit">Guess</button>
+        </form>
       </div>
     </>
   );
