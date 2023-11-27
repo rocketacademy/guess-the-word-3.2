@@ -48,29 +48,40 @@ function App() {
       <div>
         <img src={logo} className="logo" alt="Rocket logo" />
       </div>
+      <div>
+        <h2>Word To Guess:</h2>
+        <div className="hidden-word">{generateWordDisplay()}</div>
+      </div>
       <div className="card">
-        <h6>{currWord}</h6>
-        <h1>Guess The Word 🚀</h1>
-        <h3>Word Display</h3>
-        {generateWordDisplay()}
-        <h3>Guessed Letters</h3>
-        {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
-        <br />        
-        <div>
+        <div className="right-side">
+          <div>{displayImage()}</div>
         </div>
-        {displayImage()}
-        <div>
-          Number of Guesses left: {guessesLeft}
-          {guessesLeft == 0? <h3 style={{color:"red"}}>You Lost!</h3> : null}
+        <div className="left-side">
+          <div className="guessed-letters">
+            <h3>Guessed Letters</h3>
+            <div>
+              {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
+            </div>
+          </div>
+          <div className="number-guesses">
+            Guesses Left: {guessesLeft}
+            {guessesLeft == 0 ? (
+              <h3 style={{ color: "red" }}>You Lost!</h3>
+            ) : null}
+          </div>
+          <div className="input-container">
+            <h3>Input</h3>
+            {alreadyGuessedLetterMsg ? (
+              <h5>{alreadyGuessedLetterMsg}</h5>
+            ) : null}
+            <input
+              type="text"
+              value={currLetter}
+              onChange={handleInputChange}
+            ></input>
+            <button onClick={updateGuessedLetters}>Submit</button>
+          </div>
         </div>
-        <h3>Input</h3>
-        {alreadyGuessedLetterMsg ? <h5>{alreadyGuessedLetterMsg}</h5> : null}
-        <input
-          type="text"
-          value={currLetter}
-          onChange={handleInputChange}
-        ></input>
-        <button onClick={updateGuessedLetters}>Submit</button>
       </div>
     </>
   );
