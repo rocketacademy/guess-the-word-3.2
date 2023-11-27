@@ -1,38 +1,63 @@
 import logo from "/logo.png";
 import "./App.css";
 import { getRandomWord } from "./utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button, Typography, Container, Box } from "@mui/material";
 
 function App() {
-  // currWord is the current secret word for this round. Update this with the updater function after each round.
   const [currWord, setCurrentWord] = useState(getRandomWord());
-  // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [guessLeft, setGuessLeft] = useState(10);
   const [winLose, setWinLose] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+
+  const checkIfPlayerWins = () => {
+    return currWord.split("").every((letter) => guessedLetters.includes(letter));
+  };
 
   const generateWordDisplay = () => {
-    const wordDisplay = [];
-    // for...of is a string and array iterator that does not use index
-    for (let letter of currWord) {
-      if (guessedLetters.includes(letter)) {
-        wordDisplay.push(letter);
-      } else {
-        wordDisplay.push("_");
-      }
-    }
     console.log(currWord);
-    return wordDisplay.toString();
+    return currWord.split("").map((letter, index) => (
+      <Box key={index} display="inline-block" border={1} borderRadius="borderRadius" padding={2} margin={1}>
+        {guessedLetters.includes(letter) ? letter : "_"}
+      </Box>
+    ));
   };
+
+  useEffect(() => {
+    if (checkIfPlayerWins()) {
+      console.log(`Player wins!`);
+      setWinLose("win");
+    }
+
+    if (guessLeft === 0) {
+      console.log(`Player loses!`);
+      setWinLose("lose");
+    }
+  }, [guessedLetters, currWord, guessLeft]);
 
   const handleGuess = (event) => {
     event.preventDefault();
-    const input = event.target.elements.input.value; // Get the value of the input field
-    setGuessedLetters([...guessedLetters, input]); // Add the guessed letter to the guessedLetters state
-    if (!currWord.includes(input)) {
+    const input = event.target.elements.input.value;
+    setGuessedLetters([...guessedLetters, input]);
+
+    if (currWord.includes(input)) {
+      console.log(`correct letter`);
+    } else {
       setGuessLeft(guessLeft - 1);
     }
-    event.target.reset(); // Reset the input field
+
+    setInputValue("");
+
+    event.target.reset();
+  };
+
+  const resetGame = () => {
+    setCurrentWord(getRandomWord());
+    setGuessedLetters([]);
+    setGuessLeft(10);
+    setInputValue("");
+    setWinLose(null);
   };
 
   return (
@@ -42,8 +67,20 @@ function App() {
       </div>
       <div className="card">
         <h1>Guess The Word 🚀</h1>
-        <h3>Word Display</h3>
-        {generateWordDisplay()}
+
+        <Container>
+          <Box border={1} borderRadius="borderRadius" padding={2} marginBottom={2}>
+            <Typography variant="h6" component="div">
+              Word Display
+            </Typography>
+            <Typography variant="body1" component="div">
+              {generateWordDisplay()}
+            </Typography>
+          </Box>
+        </Container>
+
+        {winLose === "win" && <p>You Win!!</p>}
+        {winLose === "lose" && <p>You Lose! Hit "reset" to try again!</p>}
 
         <h3>Guessed Letters</h3>
         {guessedLetters.length > 0 ? guessedLetters.toString().toUpperCase() : ""}
@@ -51,10 +88,24 @@ function App() {
         <h3> No. of guesses left: {guessLeft}</h3>
         <h3>Input</h3>
         <form onSubmit={handleGuess}>
-          <input type="text" id="input"></input>
-          <br />
-          <button type="submit">Guess</button>
+          <input
+            type="text"
+            id="input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            style={{ width: "200px", height: "40px", fontSize: "16px" }}
+          ></input>
+          <br></br>
+          <br></br>
+          <Button variant="contained" color="success" type="submit">
+            Guess
+          </Button>
         </form>
+        <br></br>
+
+        <Button variant="contained" color="error" onClick={resetGame}>
+          Reset
+        </Button>
       </div>
     </>
   );
