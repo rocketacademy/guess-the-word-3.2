@@ -1,16 +1,34 @@
 import logo from "/logo.png";
 import "./App.css";
 import { getRandomWord } from "./utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   // currWord is the current secret word for this round. Update this with the updater function after each round.
   const [currWord, setCurrentWord] = useState(getRandomWord());
   // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
+  const [inputValue, setInputValue] = useState("")
+  const [remainingGuesses, setRemainGuess] = useState(10)
 
-  // Add additional states below as required.
 
+  //takes the input and updates that
+  const handleInputChange = (e) =>{
+    setInputValue(e.target.value)
+  } 
+  //on submit, reset input box, add input into guessedLetters
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(inputValue)
+    setGuessedLetters((prev) => [...prev,inputValue])
+    if(!currWord.includes(inputValue)){
+      setRemainGuess((prev) => (prev -= 1));
+    }
+    setInputValue("")
+  };
+
+  
+  
   const generateWordDisplay = () => {
     const wordDisplay = [];
     // for...of is a string and array iterator that does not use index
@@ -23,7 +41,61 @@ function App() {
     }
     return wordDisplay.toString();
   };
+  
+  //debugging
+  useEffect(()=>{
+    console.log("currWord ",currWord)
+    console.log("GuessedLetters ",guessedLetters)
+    console.log("remaining guesses: ", remainingGuesses)
+    if(generateWordDisplay() == currWord.split("")){
+      console.log("Win")
+    }
+  },[currWord,guessedLetters, remainingGuesses])
+  const Lose  = () =>{
+    return (
+      <div>
+        <p>You Lost. The word is: {currWord}</p>
+        <button onClick={() => location.reload()}>Play again</button>
+      </div>
+    );
+  }
+  const Win  = () =>{
+    return (
+      <div>
+        <p>You Won. Want to play again?</p>
+        <button onClick={() => location.reload()}>Play again</button>
+      </div>
+    );
+  }
+  const Play = () => {
+    return (
+      <div>
+        <h3>Input</h3>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="">Guess a letter: </label>
+          <input
+            value={inputValue}
+            onChange={handleInputChange}
+            type="text"
+            name="guess"
+            id=""
+            maxLength={1}
+          />
+          <button type="submit">submit</button>
+        </form>
+      </div>
+    );
+  }
 
+  const GameLogic = () =>{
+    if(remainingGuesses == 0){
+      return <Lose/>
+    }
+    if(generateWordDisplay() == currWord.split("")){
+      return <Win/> 
+    }
+    else{return <Play/>}
+  }
   // create additional function to power the
 
   return (
@@ -36,12 +108,13 @@ function App() {
         <h3>Word Display</h3>
         {generateWordDisplay()}
         <h3>Guessed Letters</h3>
-        {this.state.guessedLetters.length > 0
-          ? this.state.guessedLetters.toString()
-          : "-"}
+        {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
         <br />
-        <h3>Input</h3>
-        {/* Insert form element here */}
+        <GameLogic/>
+
+
+        <p>Your remaining guesses: {remainingGuesses}</p>
+
       </div>
     </>
   );
