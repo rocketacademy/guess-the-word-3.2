@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 
 function App() {
   // currWord is the current secret word for this round. Update this with the updater function after each round.
-  // const [currWord, setCurrentWord] = useState(getRandomWord());
-  const [currWord, setCurrentWord] = useState("LEAF");
+  const [currWord, setCurrentWord] = useState(getRandomWord());
+  // const [currWord, setCurrentWord] = useState("pillow");
   // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [selectedLetter, setSelectedLetter] = useState("");
@@ -21,12 +21,25 @@ function App() {
     setTotalGuesses(useState(10));
   };
 
+  const checkWin = () => {
+    let result = true;
+    for (let char of currWord) {
+      if (guessedLetters.includes(char.toUpperCase()) === false) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  let didPlayerWin = checkWin();
+
   const generateWordDisplay = () => {
     const wordDisplay = [];
     // for...of is a string and array iterator that does not use index
     for (let letter of currWord) {
-      if (guessedLetters.includes(letter)) {
+      if (guessedLetters.includes(letter.toUpperCase())) {
         wordDisplay.push(letter);
+        didPlayerWin = checkWin();
       } else {
         wordDisplay.push("_");
       }
@@ -35,18 +48,6 @@ function App() {
   };
 
   // create additional function to power the
-
-  const checkWin = () => {
-    let result = true;
-    for (let char of currWord) {
-      if (guessedLetters.includes(char) === false) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const didPlayerWin = checkWin();
 
   const checkGuessCount = () => {
     if (totalGuesses === 1 && didPlayerWin === false) {
@@ -74,10 +75,8 @@ function App() {
     e.preventDefault();
     console.log(selectedLetter);
 
-    if (guessedLetters.includes(selectedLetter)) {
-      alert(
-        `Guess another letter! You have already guessed ${selectedLetter}.`
-      );
+    if (guessedLetters.includes(selectedLetter) || selectedLetter === "") {
+      alert(`Guess another letter!`);
     } else {
       setGuessedLetters((current) => [...current, selectedLetter]);
 
@@ -93,6 +92,11 @@ function App() {
     // setGuessedLetters((current) => [...current, selectedLetter]);
     console.log(`real guessed letter ${guessedLetters}`);
   }, [guessedLetters]);
+
+  useEffect(() => {
+    // setGuessedLetters((current) => [...current, selectedLetter]);
+    console.log(`didplayer win ${didPlayerWin}`);
+  }, [didPlayerWin]);
 
   return (
     <>
@@ -118,7 +122,9 @@ function App() {
                 setSelectedLetter(e.target.value);
               }}
               name="selectedLetter"
+              // defaultValue="A"
             >
+              <option value=""></option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C </option>
@@ -138,7 +144,8 @@ function App() {
               <option value="Q">Q</option>
               <option value="R">R </option>
               <option value="S">S</option>
-              <option value="T">U</option>
+              <option value="T">T</option>
+              <option value="U">U</option>
               <option value="V">V </option>
               <option value="W">W</option>
               <option value="X">X</option>
@@ -146,14 +153,11 @@ function App() {
               <option value="Z">Z </option>
             </select>
           </label>
-          {/* <button
-            onClick={(buttonText = "Submit" ? handleSubmit : reset)}
-            type="submit"
-          > */}
+
           {buttonText()}
           {/* </button> */}
         </form>
-        <h1> {didPlayerWin && "You guessed the word!"}</h1>
+        <h1> {didPlayerWin === true && "You guessed the word!"}</h1>
         <h3> {checkGuessCount()}</h3>
       </div>
     </>
