@@ -8,10 +8,10 @@ function App() {
   const [currWord, setCurrentWord] = useState(getRandomWord());
   // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
-  const [errorState, setErrorState] = useState(false);
 
   // Add additional states below as required.
   const [guess, setGuess] = useState("");
+  const [errorState, setErrorState] = useState(false);
 
   const generateWordDisplay = () => {
     const wordDisplay = [];
