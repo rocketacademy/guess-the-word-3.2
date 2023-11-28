@@ -50,7 +50,7 @@ function App() {
     } else if (!displayWord.includes("_")) {
       setGameState(2);
     }
-  });
+  }, [lives, displayWord]);
 
   const resetGame = () => {
     setCurrentWord(getRandomWord());
@@ -98,6 +98,7 @@ function App() {
         ) : gameState === 1 ? (
           <>
             <p>You ran out of lives!</p>
+            <h4>Word was {currWord}</h4>
             <button onClick={() => resetGame()}>Restart Game</button>
           </>
         ) : gameState === 2 ? (
