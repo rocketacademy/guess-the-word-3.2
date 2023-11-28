@@ -56,7 +56,18 @@ function App() {
   },[currWord,guessedLetters, remainingGuesses])
 
   //enter to submit 
-  
+  useEffect(() =>{
+    const keyDownHandler = (event) => {
+      console.log("Pressed: ", event.key);
+      if (event.key === "Enter") {
+        handleSubmit();
+      }
+    };
+    document.addEventListener('keydown', keyDownHandler)
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  },[])
 
 
   //game states and flow.
