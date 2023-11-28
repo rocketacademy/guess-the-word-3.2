@@ -19,12 +19,15 @@ function App() {
   //on submit, reset input box, add input into guessedLetters
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(!guessedLetters.includes(inputValue) && inputValue){
+    
     console.log(inputValue)
     setGuessedLetters((prev) => [...prev,inputValue])
     if(!currWord.includes(inputValue)){
       setRemainGuess((prev) => (prev -= 1));
     }
-    setInputValue("")
+    setInputValue("")}
+    else{alert("You either already guessed that or you did not put anything in the guess box")}
   };
 
   
@@ -51,6 +54,12 @@ function App() {
       console.log("Win")
     }
   },[currWord,guessedLetters, remainingGuesses])
+
+  //enter to submit 
+  
+
+
+  //game states and flow.
   const Lose  = () =>{
     return (
       <div>
@@ -74,6 +83,7 @@ function App() {
         <form onSubmit={handleSubmit}>
           <label htmlFor="">Guess a letter: </label>
           <input
+            autoFocus={true}
             value={inputValue}
             onChange={handleInputChange}
             type="text"
