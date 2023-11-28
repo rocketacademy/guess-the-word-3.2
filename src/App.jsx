@@ -36,9 +36,7 @@ function App() {
         <h3>Word Display</h3>
         {generateWordDisplay()}
         <h3>Guessed Letters</h3>
-        {this.state.guessedLetters.length > 0
-          ? this.state.guessedLetters.toString()
-          : "-"}
+        {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
         <br />
         <h3>Input</h3>
         {/* Insert form element here */}
