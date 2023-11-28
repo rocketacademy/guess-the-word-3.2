@@ -75,8 +75,6 @@ function App() {
     checkWin(currWord)? setWinState(true): setWinState(false)
   }, [guessedLetters])
 
-
-
   return (
     <>
       <div>
