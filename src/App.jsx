@@ -1,15 +1,25 @@
 import logo from "/logo.png";
 import "./App.css";
 import { getRandomWord } from "./utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   // currWord is the current secret word for this round. Update this with the updater function after each round.
-  const [currWord, setCurrentWord] = useState(getRandomWord());
+  // const [currWord, setCurrentWord] = useState(getRandomWord());
+  const [currWord, setCurrentWord] = useState("LEAF");
   // guessedLetters stores all letters a user has guessed so far
   const [guessedLetters, setGuessedLetters] = useState([]);
+  const [selectedLetter, setSelectedLetter] = useState("");
+  const [totalGuesses, setTotalGuesses] = useState(10);
 
   // Add additional states below as required.
+
+  const reset = () => {
+    setCurrentWord(useState(getRandomWord()));
+    setGuessedLetters(useState([]));
+    setSelectedLetter(useState(""));
+    setTotalGuesses(useState(10));
+  };
 
   const generateWordDisplay = () => {
     const wordDisplay = [];
@@ -26,6 +36,64 @@ function App() {
 
   // create additional function to power the
 
+  const checkWin = () => {
+    let result = true;
+    for (let char of currWord) {
+      if (guessedLetters.includes(char) === false) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const didPlayerWin = checkWin();
+
+  const checkGuessCount = () => {
+    if (totalGuesses === 1 && didPlayerWin === false) {
+      return `You're out of guesses! The word was ${currWord}`;
+    }
+  };
+
+  let buttonText = () => {
+    console.log(didPlayerWin);
+    if (totalGuesses === 1 || didPlayerWin === true) {
+      return (
+        <button onClick={reset} type="submit">
+          Reset
+        </button>
+      );
+    }
+    return (
+      <button onClick={handleSubmit} type="submit">
+        Submit
+      </button>
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(selectedLetter);
+
+    if (guessedLetters.includes(selectedLetter)) {
+      alert(
+        `Guess another letter! You have already guessed ${selectedLetter}.`
+      );
+    } else {
+      setGuessedLetters((current) => [...current, selectedLetter]);
+
+      if (currWord.includes(guessedLetters) === false) {
+        setTotalGuesses(totalGuesses - 1);
+        console.log(totalGuesses);
+      }
+    }
+    setSelectedLetter("");
+  };
+
+  useEffect(() => {
+    // setGuessedLetters((current) => [...current, selectedLetter]);
+    console.log(`real guessed letter ${guessedLetters}`);
+  }, [guessedLetters]);
+
   return (
     <>
       <div>
@@ -36,12 +104,57 @@ function App() {
         <h3>Word Display</h3>
         {generateWordDisplay()}
         <h3>Guessed Letters</h3>
-        {this.state.guessedLetters.length > 0
-          ? this.state.guessedLetters.toString()
-          : "-"}
+        {guessedLetters.length > 0 ? guessedLetters.toString() : ""}
         <br />
         <h3>Input</h3>
         {/* Insert form element here */}
+        <form>
+          <label>
+            Guess a letter
+            {/* <input maxLength={1} type="text" name="guessedLetter" />{" "} */}
+            <select
+              value={selectedLetter}
+              onChange={(e) => {
+                setSelectedLetter(e.target.value);
+              }}
+              name="selectedLetter"
+            >
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C </option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="F">F </option>
+              <option value="G">G</option>
+              <option value="H">H</option>
+              <option value="I">I </option>
+              <option value="J">J</option>
+              <option value="K">K</option>
+              <option value="L">L </option>
+              <option value="M">M</option>
+              <option value="N">N</option>
+              <option value="O">O </option>
+              <option value="P">P</option>
+              <option value="Q">Q</option>
+              <option value="R">R </option>
+              <option value="S">S</option>
+              <option value="T">U</option>
+              <option value="V">V </option>
+              <option value="W">W</option>
+              <option value="X">X</option>
+              <option value="Y">Y </option>
+              <option value="Z">Z </option>
+            </select>
+          </label>
+          {/* <button
+            onClick={(buttonText = "Submit" ? handleSubmit : reset)}
+            type="submit"
+          > */}
+          {buttonText()}
+          {/* </button> */}
+        </form>
+        <h1> {didPlayerWin && "You guessed the word!"}</h1>
+        <h3> {checkGuessCount()}</h3>
       </div>
     </>
   );
