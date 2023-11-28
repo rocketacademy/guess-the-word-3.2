@@ -41,13 +41,15 @@ function App() {
       }
     }
 
-    if (guess.length === 1 && allLetter(guess)) {
+    const lowerCaseGuess = guess.toLowerCase();
+
+    if (lowerCaseGuess.length === 1 && allLetter(lowerCaseGuess)) {
       //if letter is not found in the word
-      if (!currWord.includes(guess)) {
+      if (!currWord.includes(lowerCaseGuess)) {
         setUserGuess((prevGuess) => prevGuess - 1);
       }
       //update guessed letters
-      setGuessedLetters([...guessedLetters, guess]);
+      setGuessedLetters([...guessedLetters, lowerCaseGuess]);
       // reset guess to an empty string after submission
       setGuess("");
       //check winning conditions
