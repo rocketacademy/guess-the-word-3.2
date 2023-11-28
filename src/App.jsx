@@ -137,9 +137,8 @@ function App() {
               {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
               <br />
               <br />
-              <h4>Input</h4>
-
-              <p>Please key in 1 letter only.</p>
+              <hr />
+              <p>Please enter 1 alphabetical character.</p>
               {/* Insert form element here */}
               <form onSubmit={handleSubmit}>
                 <label htmlFor="guess">Your Guess: </label>
