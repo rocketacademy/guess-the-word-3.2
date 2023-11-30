@@ -29,6 +29,7 @@ function App() {
         wordDisplay.push("_");
       }
     }
+
     return wordDisplay.toString();
   };
 
@@ -58,9 +59,9 @@ function App() {
     setInput("");
   };
 
-  const checkHasUserGuessedWord = (inputLetter) => {
+  const checkHasUserGuessedWord = () => {
     // Create new array with spread operator because we do not wish to alter guessedLetters
-    const currentGuessedLetters = [...guessedLetters, inputLetter];
+    const currentGuessedLetters = [...guessedLetters];
     for (let letter of currWord) {
       if (!currentGuessedLetters.includes(letter)) {
         return false;
